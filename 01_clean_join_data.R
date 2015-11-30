@@ -21,6 +21,10 @@ diana_data <- tbl_df(read.csv("data/diana_data.csv", header = TRUE))
 top_dat_raw  <- top_dat %>%
   select(Label, Length)
 
+# load sex info
+sex_data <- tbl_df(read.csv("data/ind_sex_kieran.csv", header = TRUE))
+
+
 
 # clean data ---------------------------------------------------
 

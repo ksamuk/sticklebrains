@@ -60,39 +60,6 @@ cere_plot <- sizedat %>%
 
 plot_grid(olf_plot, tele_plot, optic_plot, cere_plot)
 
-# tele mod
-tele_mod_1 <- sizedat %>%
-  lmer(tele_size ~ sl + (1|pond), data = .) 
 
-tele_mod_2 <- sizedat %>%
-  lmer(tele_size ~ sl + treatment + (1|pond), data = .) 
-
-# olf mod
-olf_mod_1 <- sizedat %>%
-  lmer(olf_size ~ sl + (1|pond), data = .) 
-
-olf_mod_2 <- sizedat %>%
-  lmer(olf_size ~ sl + treatment + (1|pond), data = .) 
-
-# optic mod
-optic_mod_1 <- sizedat %>%
-  lmer(optic_size ~ sl + (1|pond), data = .) 
-
-optic_mod_2 <- sizedat %>%
-  lmer(optic_size ~ sl + treatment + (1|pond), data = .) 
-
-# cere mod
-cere_mod_1 <- sizedat %>%
-  lmer(cere_size ~ sl + (1|pond), data = .) 
-
-cere_mod_2 <- sizedat %>%
-  lmer(cere_size ~ sl + treatment + (1|pond), data = .) 
-
-# anovas
-
-anova(tele_mod_1, tele_mod_2)
-anova(olf_mod_1, olf_mod_2)
-anova(optic_mod_1, optic_mod_2)
-anova(cere_mod_1, cere_mod_2)
 
 
