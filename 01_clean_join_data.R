@@ -18,13 +18,11 @@ top_dat_raw
 # load diana extra data
 diana_data <- tbl_df(read.csv("data/diana_data.csv", header = TRUE))
 
-top_dat_raw  <- top_dat %>%
+top_dat_raw  <- top_dat_raw  %>%
   select(Label, Length)
 
 # load sex info
 sex_data <- tbl_df(read.csv("data/ind_sex_kieran.csv", header = TRUE))
-
-
 
 # clean data ---------------------------------------------------
 
@@ -91,7 +89,27 @@ names(tmp) <- c("pond", "id", "treatment", "sl", "bd")
 
 top_dat <- left_join(top_dat, tmp)
 
+head(top_dat)
+head(sex_data)
 
+split_ind <- sex_data$ind %>% 
+  gsub("F3_|P", "", .) %>%
+  strsplit(split = "_")
+
+pond <- lapply(split_ind, function(x)x[1]) %>% unlist
+id <- lapply(split_ind, function(x)x[2]) %>% unlist
+
+as.character(1)
+as.numeric(factor(c("a", "b")))
+as.numeric("a")
+
+sex_dat <- data.frame(pond = as.numeric(pond), id = as.numeric(id), sex = sex_data$sex)
+tbl_df(sex_dat)
+tbl_df(top_dat)
+head(top_dat)  
+
+top_dat <- left_join(top_dat, sex_dat)
+  
 # write to file -----------------------------------------------------------
 
 write.table(top_dat, file = "data/brain_data_top.txt", row.names = FALSE, quote = FALSE, sep = "\t")
