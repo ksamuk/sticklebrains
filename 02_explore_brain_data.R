@@ -1,3 +1,8 @@
+###########################################################################
+# plots of brain size data
+# KS nov 2015
+###########################################################################
+
 library("dplyr")
 library("ggplot2")
 library("tidyr")
@@ -15,7 +20,7 @@ tele_size <- with(brainsdat, tele_l/scale * tele_w/scale * pi)
 optic_size <- with(brainsdat, optic_l/scale * optic_w/scale * pi)
 cere_size <- with(brainsdat, cere_l/scale * cere_w/scale * pi)
 
-sizedat <- data.frame(pond = brainsdat$pond, id = brainsdat$id, treatment = brainsdat$treatment, 
+sizedat <- data.frame(pond = brainsdat$pond, id = brainsdat$id, treatment = brainsdat$treatment, sex = brainsdat$sex,
                       sl = brainsdat$sl, bd = brainsdat$bd, olf_size, tele_size, optic_size, cere_size)
 
 # histogram of olf_size
@@ -60,6 +65,38 @@ cere_plot <- sizedat %>%
 
 plot_grid(olf_plot, tele_plot, optic_plot, cere_plot)
 
+sizedat %>%
+  ggplot(aes(x = treatment, y = tele_size/sl, colour = factor(sex))) +
+  geom_boxplot() 
 
+###########################################################################
+# linear models for above
+###########################################################################
+
+# fit two models, 1: reduced, only the variables being controllde for), 2: the full model with treatment effect
+mod1 <- sizedat %>%
+  lmer(tele_size ~ sl + sex +  (1|pond), data = .)
+
+mod2 <- sizedat %>%
+  lmer(tele_size ~ sl + sex + treatment + (1|pond), data = .)
+
+# compare the two models with a likelihood ratio test
+anova(mod1, mod2)
+
+# get residuals for a model
+tele_resid <- sizedat %>%
+  lm(tele_size ~ sl, data = .) %>%
+  residuals 
+
+# add residuals as a column
+sizedat$tele_resid <- tele_resid
+
+# plot using residuals
+sizedat %>%
+  ggplot(aes(x = factor(treatment), y = tele_resid, color = factor(sex)))+
+  geom_boxplot()
+
+# in line reporting of stats (example):
+# telencephalon size was significantly smaller in the predation ponds (likelihood ratio test, X^2 1 = 7.444, p = 0.006)
 
 
