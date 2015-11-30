@@ -74,7 +74,7 @@ top_dat <- top_dat_raw %>%
 row.names(top_dat) <- NULL
 
 # convert char columns to numeric (not sure why they got detected as char)
-top_dat_new <- data.frame(lapply(2:10,function(x) as.numeric(unlist(top_dat[,x]))))
+top_dat_new <- data.frame(lapply(3:11,function(x) as.numeric(unlist(top_dat[,x]))))
 top_dat<- cbind(as.numeric(top_dat$pond), as.numeric(top_dat$id), top_dat_new)%>%
   setNames(c("pond", "id", "scale", "olf_l", "olf_w", "tele_l", "tele_w", "optic_l", "optic_w", "cere_l", "cere_w")) %>%
   tbl_df
