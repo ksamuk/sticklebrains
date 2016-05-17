@@ -1,0 +1,6 @@
+stickle back predation common garden experiment
+
+- Brains imaged March 2016
+- p(pond number).(cross number).(sample number)
+- Note: Lecia caused all the numbers to have a 1 at the end. eg) 1.1.2 will show up as 1.1.21
+        Ignore the 1 at the end
