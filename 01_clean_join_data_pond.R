@@ -12,8 +12,7 @@ library("tidyr")
 
 # load raw data -----------------------------------------------------------
 
-top_dat_raw <- tbl_df(read.table("data/top_measurements.txt", header = TRUE))
-top_dat_raw 
+top_dat_raw <- tbl_df(read.table("data/top_measurements_pond.txt", header = TRUE))
 
 # load diana extra data
 diana_data <- tbl_df(read.csv("data/diana_data.csv", header = TRUE))
@@ -77,20 +76,17 @@ row.names(top_dat) <- NULL
 
 # convert char columns to numeric (not sure why they got detected as char)
 top_dat_new <- data.frame(lapply(3:11,function(x) as.numeric(unlist(top_dat[,x]))))
-top_dat<- cbind(as.numeric(top_dat$pond), as.numeric(top_dat$id), top_dat_new)%>%
+top_dat <- cbind(as.numeric(top_dat$pond), as.numeric(top_dat$id), top_dat_new)%>%
   setNames(c("pond", "id", "scale", "olf_l", "olf_w", "tele_l", "tele_w", "optic_l", "optic_w", "cere_l", "cere_w")) %>%
   tbl_df
 
 # join in diana data
 tmp <- diana_data %>%
-  select( Pond, Individual, Treatment, Standard.Length, BD)
+  select( Pond, Cross, Individual, Treatment, Standard.Length, BD)
 
-names(tmp) <- c("pond", "id", "treatment", "sl", "bd")
+names(tmp) <- c("pond", "cross", "id", "treatment", "sl", "bd")
 
 top_dat <- left_join(top_dat, tmp)
-
-head(top_dat)
-head(sex_data)
 
 split_ind <- sex_data$ind %>% 
   gsub("F3_|P", "", .) %>%
@@ -99,17 +95,13 @@ split_ind <- sex_data$ind %>%
 pond <- lapply(split_ind, function(x)x[1]) %>% unlist
 id <- lapply(split_ind, function(x)x[2]) %>% unlist
 
-as.character(1)
-as.numeric(factor(c("a", "b")))
-as.numeric("a")
-
 sex_dat <- data.frame(pond = as.numeric(pond), id = as.numeric(id), sex = sex_data$sex)
-tbl_df(sex_dat)
-tbl_df(top_dat)
-head(top_dat)  
 
 top_dat <- left_join(top_dat, sex_dat)
+
+top_dat <- top_dat %>% 
+  select(pond, cross, id, sex, treatment, everything())
   
 # write to file -----------------------------------------------------------
 
-write.table(top_dat, file = "data/brain_data_top.txt", row.names = FALSE, quote = FALSE, sep = "\t")
+write.table(top_dat, file = "data/brain_data_pond.txt", row.names = FALSE, quote = FALSE, sep = "\t")
