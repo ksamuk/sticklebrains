@@ -186,5 +186,3 @@ gard_dat_resid %>%
 
 # in line reporting of stats (example):
 # telencephalon size was significantly smaller in the predation ponds (likelihood ratio test, X^2 1 = 7.444, p = 0.006)
-
-
