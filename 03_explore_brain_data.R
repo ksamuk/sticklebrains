@@ -155,9 +155,14 @@ resids <- pond_dat %>%
   .$resid %>%
   unlist
 
-pond_dat %>%
+
+pond_dat_resid <- pond_dat %>%
   gather(key = region, value = size, olf_size, tele_size, optic_size, cere_size) %>%
-  mutate(resid = resids) %>%
+  mutate(resid = resids)
+
+write.table(pond_dat_resid, "data/pond_data_corrected.txt", row.names = FALSE, quote = FALSE)
+
+pond_dat_resid %>%  
   ggplot(aes(x = factor(treatment), y = resid, color = factor(sex)))+
   geom_boxplot()+
   facet_wrap(~region, scale = "free_y")+
@@ -173,9 +178,13 @@ resids <- gard_dat %>%
   .$resid %>%
   unlist
 
-gard_dat %>%
+gard_dat_resid<- gard_dat %>%
   gather(key = region, value = size, olf_size, tele_size, optic_size, cere_size) %>%
-  mutate(resid = resids) %>%
+  mutate(resid = resids) 
+
+write.table(gard_dat_resid, "data/garden_data_corrected.txt", row.names = FALSE, quote = FALSE)
+  
+gard_dat_resid %>%
   ggplot(aes(x = factor(treatment), y = resid, color = factor(sex)))+
   geom_boxplot()+
   facet_wrap(~region, scale = "free_y")+
