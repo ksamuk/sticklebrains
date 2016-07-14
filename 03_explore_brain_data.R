@@ -36,7 +36,6 @@ gard_dat <- left_join(gard_dat, treat_map)
 pond_dat$sex <- ifelse(pond_dat$sex == 0, "F", "M")
 gard_dat$sex <- toupper(gard_dat$sex)
 
-
 ###########################################################################
 # formatting raw data
 ###########################################################################
@@ -79,9 +78,6 @@ pond_dat_l %>%
   ggplot(aes(x = sl)) +
   geom_histogram() +
   facet_wrap(~region)
-
-
-tbl_df(brainsdat)
 
 # lobe size vs. body size, for each lobe x treatment (pond)
 pond_dat_l %>%
@@ -142,8 +138,6 @@ fit_model_region_pond <- function(brain_dat, region, group = "cross"){
 
 pond_models <- lapply(c("olf", "tele", "optic", "cere"), fit_model_region_pond, brain_dat = pond_dat)
 gard_models <-lapply(c("olf", "tele", "optic", "cere"), fit_model_region_pond, brain_dat = gard_dat, group = "family")
-
-
 
 # plots of sex x treamtent, pond
 
