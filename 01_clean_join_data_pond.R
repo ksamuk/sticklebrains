@@ -4,13 +4,17 @@
 ###########################################################################
 
 
-# libraries ---------------------------------------------------------------
+###########################################################################
+# libraries
+###########################################################################
 
 library("dplyr")
 library("ggplot2")
 library("tidyr")
 
-# load raw data -----------------------------------------------------------
+###########################################################################
+# load raw data
+###########################################################################
 
 top_dat_raw <- tbl_df(read.table("data/top_measurements_pond.txt", header = TRUE))
 
@@ -23,7 +27,9 @@ top_dat_raw  <- top_dat_raw  %>%
 # load sex info
 sex_data <- tbl_df(read.csv("data/ind_sex_kieran.csv", header = TRUE))
 
-# clean data ---------------------------------------------------
+###########################################################################
+# clean raw data
+###########################################################################
 
 ## convert "Label" to pond/id
 
@@ -52,7 +58,9 @@ top_dat_raw %>%
   summarise(obs_length = length(length) < 9) %>%
   with(any(obs_length))
 
-# format data -------------------------------------------------------------
+###########################################################################
+# format data
+###########################################################################
 
 # function for converting imagej measurements to columns
 convert_length_to_measurements <- function(imagej_data){
@@ -102,6 +110,8 @@ top_dat <- left_join(top_dat, sex_dat)
 top_dat <- top_dat %>% 
   select(pond, cross, id, sex, treatment, everything())
   
-# write to file -----------------------------------------------------------
+###########################################################################
+# write to file
+###########################################################################
 
 write.table(top_dat, file = "data/brain_data_pond.txt", row.names = FALSE, quote = FALSE, sep = "\t")

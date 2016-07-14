@@ -5,13 +5,19 @@
 ###########################################################################
 
 
-# libraries ---------------------------------------------------------------
+###########################################################################
+# libraries
+###########################################################################
+
 
 library("dplyr")
 library("ggplot2")
 library("tidyr")
 
-# load raw data -----------------------------------------------------------
+###########################################################################
+# raw data
+###########################################################################
+
 
 # the brain measurements from imagej (three files, so read and bind)
 top_results <- list.files("data", pattern = "top_results", full.names = TRUE)
@@ -24,7 +30,9 @@ sex_data <- tbl_df(read.csv("data/common_garden_sex.csv", header = TRUE))
 # load standard length data
 sl_data <- tbl_df(read.csv("data/common_garden_body_size.csv", header = TRUE))
 
-# clean brain data ---------------------------------------------------
+###########################################################################
+# clean brain data
+###########################################################################
 
 # remove angle data
 top_dat_raw  <- top_dat_raw  %>%
@@ -52,7 +60,9 @@ top_dat_raw %>%
   summarise(obs_length = length(length) < 9) %>%
   with(any(obs_length))
 
-# format brain data -------------------------------------------------------------
+###########################################################################
+# format brain data
+###########################################################################
 
 # function for converting imagej measurements to columns
 convert_length_to_measurements <- function(imagej_data){
@@ -80,9 +90,9 @@ top_dat <- cbind(as.character(top_dat$pond), as.character(top_dat$family), as.ch
   setNames(c("pond", "family", "id", "scale", "olf_l", "olf_w", "tele_l", "tele_w", "optic_l", "optic_w", "cere_l", "cere_w")) %>%
   tbl_df
 
-
-
-# join in standard length data -------------------------------------------------------------
+###########################################################################
+# join sl data
+###########################################################################
 
 # split sl id column into pond/family/id
 sl_data <- sl_data %>%
@@ -91,7 +101,9 @@ sl_data <- sl_data %>%
 
 top_dat <- left_join(top_dat, sl_data)
 
-# join in sex data -------------------------------------------------------------
+###########################################################################
+# join sex data
+###########################################################################
 
 sex_data <- sex_data %>%
   mutate(pond = as.factor(pond)) %>%
@@ -101,6 +113,8 @@ sex_data <- sex_data %>%
 
 top_dat <- left_join(top_dat, sex_data)
   
-# write to file -----------------------------------------------------------
+###########################################################################
+# write to file
+###########################################################################
 
 write.table(top_dat, file = "data/brain_data_common_garden.txt", row.names = FALSE, quote = FALSE, sep = "\t")
