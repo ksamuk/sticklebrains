@@ -71,8 +71,8 @@ write.table(pond_dat, "data/pond_data_clean.txt", row.names = FALSE, quote = FAL
 write.table(pond_dat_l, "data/pond_data_long.txt", row.names = FALSE, quote = FALSE)
 
 # write garden data 
-write.table(pond_dat, "data/gard_data_clean.txt", row.names = FALSE, quote = FALSE)
-write.table(pond_dat_l, "data/gard_data_long.txt", row.names = FALSE, quote = FALSE)
+write.table(gard_dat, "data/gard_data_clean.txt", row.names = FALSE, quote = FALSE)
+write.table(gard_dat_l, "data/gard_data_long.txt", row.names = FALSE, quote = FALSE)
 
 ###########################################################################
 # size corrected datasets
