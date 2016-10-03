@@ -53,6 +53,7 @@ top_dat_raw <- data.frame(top_dat, length = top_dat_raw$Length)
 
 # check number of measurements per individual
 # FALSE = everything as expected
+# remove individuals with any missing data ('obs_length' < 9)
 top_dat_raw %>% 
   group_by(pond, id) %>%
   summarise(obs_length = length(length) < 9) %>%
