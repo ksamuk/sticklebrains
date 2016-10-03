@@ -91,7 +91,7 @@ pond_dat_cor_l <- pond_dat_l %>%
   rename(size_resid = .resid)
 
 # dat plot
-box_plot_gard <- pond_dat_cor_l %>%
+box_plot_pond <- pond_dat_cor_l %>%
   filter(!is.na(sex)) %>%
   mutate(region = factor(.$region, levels = c("olf_size", "tele_size", "optic_size", "cere_size"), 
                          labels = c("Olfactory", "Telencephalon", "Optic", "Cerebellum"))) %>%
@@ -99,18 +99,20 @@ box_plot_gard <- pond_dat_cor_l %>%
   mutate(treatment = factor(.$treatment, labels = c("Control", "Predation"))) %>%
   ggplot(aes(x = treatment, y = size_resid, color = factor(treatment), fill = factor(treatment))) +
   geom_point(position = position_jitter(width = 0.3)) +
-  stat_summary(fun.data = mean_cl_normal, size = 0.5, geom = "errorbar", 
-               width = 0.2, color = "black", position = position_nudge(x = 0.25)) + 
-  stat_summary(fun.y = mean, geom = "point", size = 3, color = "black", position = position_nudge(x = 0.25), pch = 21) +
+  stat_summary(fun.data = mean_cl_normal, size = 0.75, geom = "errorbar", 
+               width = 0.3, color = "black", position = position_nudge(x = 0.25)) + 
+  stat_summary(fun.y = mean, geom = "point", size = 4, color = "black", position = position_nudge(x = 0.25), pch = 21) +
   #geom_boxplot()+
-  facet_wrap(sex~region, scales = "free_y", nrow = 2, ncol = 4) +
-  scale_colour_brewer(palette = "Set1", guide_legend(title = "Treatment")) +
-  scale_fill_brewer(palette = "Set1", guide_legend(title = "Treatment")) +
+  facet_wrap(sex~region, scales = "free_y", ncol = 4, nrow = 2, labeller = label_wrap_gen(multi_line=FALSE)) +
+  scale_colour_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
   theme_bw() +
   xlab("Treatment") +
-  ylab(expression(paste("Residual brain region size", sep = ""))) +
+  ylab(expression(paste("Size-corrected brain region size", sep = ""))) +
   theme(strip.background = element_rect(fill = "white"),
         legend.position = "none")
+
+ggsave("plots/box_plot_pond.pdf", plot = box_plot_pond, width = 10, height = 8)
 
 
 ## common garden
@@ -132,20 +134,20 @@ box_plot_gard <- gard_dat_cor_l  %>%
   mutate(treatment = factor(.$treatment, labels = c("Control", "Predation"))) %>%
   ggplot(aes(x = treatment, y = size_resid, color = factor(treatment), fill = factor(treatment))) +
   geom_point(position = position_jitter(width = 0.3)) +
-  stat_summary(fun.data = mean_cl_normal, size = 0.5, geom = "errorbar", 
-               width = 0.2, color = "black", position = position_nudge(x = 0.25)) + 
-  stat_summary(fun.y = mean, geom = "point", size = 3, color = "black", position = position_nudge(x = 0.25), pch = 21) +
+  stat_summary(fun.data = mean_cl_normal, size = 0.75, geom = "errorbar", 
+               width = 0.3, color = "black", position = position_nudge(x = 0.25)) + 
+  stat_summary(fun.y = mean, geom = "point", size = 4, color = "black", position = position_nudge(x = 0.25), pch = 21) +
   #geom_boxplot()+
-  facet_wrap(sex~region, scales = "free_y", nrow = 2, ncol = 4) +
-  scale_colour_brewer(palette = "Set1", guide_legend(title = "Treatment")) +
-  scale_fill_brewer(palette = "Set1", guide_legend(title = "Treatment")) +
+  facet_wrap(sex~region, scales = "free_y", ncol = 4, nrow = 2, labeller = label_wrap_gen(multi_line=FALSE)) +
+  scale_colour_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
   theme_bw() +
   xlab("Treatment") +
-  ylab(expression(paste("Residual brain region size", sep = ""))) +
+  ylab(expression(paste("Size-corrected brain region size", sep = ""))) +
   theme(strip.background = element_rect(fill = "white"),
         legend.position = "none")
 
-
+ggsave("plots/box_plot_gard.pdf", plot = box_plot_gard, width = 10, height = 8)
 
 
 # in line reporting of stats (example):
