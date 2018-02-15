@@ -61,10 +61,16 @@ gard_dat <- data.frame(pond = gard_dat$pond, family = gard_dat$family, id = gard
 
 # wide to long
 pond_dat_l <- pond_dat %>%
-  gather(key = region, value = size, olf_size, tele_size, optic_size, cere_size)
+  rowwise %>%
+  mutate(total_size = olf_size + tele_size + optic_size + cere_size) %>%
+  ungroup %>%
+  gather(key = region, value = size, olf_size, tele_size, optic_size, cere_size, total_size)
 
 gard_dat_l <- gard_dat %>%
-  gather(key = region, value = size, olf_size, tele_size, optic_size, cere_size)
+  rowwise %>%
+  mutate(total_size = olf_size + tele_size + optic_size + cere_size) %>%
+  ungroup %>%
+  gather(key = region, value = size, olf_size, tele_size, optic_size, cere_size, total_size)
 
 # write pond data 
 write.table(pond_dat, "data/pond_data_clean.txt", row.names = FALSE, quote = FALSE)

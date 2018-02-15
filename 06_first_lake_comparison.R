@@ -50,8 +50,8 @@ pond_dat_cor_l <- pond_dat_l %>%
 # p13 c7 id7 was damaged during dissection or otherwise malformed
 box_plot_pond <- pond_dat_cor_l %>%
   filter(!is.na(sex)) %>%
-  mutate(region = factor(.$region, levels = c("olf_size", "tele_size", "optic_size", "cere_size"), 
-                         labels = c("Olfactory", "Telencephalon", "Optic", "Cerebellum"))) %>%
+  mutate(region = factor(.$region, levels = c("olf_size", "tele_size", "optic_size", "cere_size", "total_size"), 
+                         labels = c("Olfactory", "Telencephalon", "Optic", "Cerebellum", "Total"))) %>%
   filter(!(pond == 13 & cross == 7 & id == 79)) %>%
   mutate(sex = factor(.$sex, labels = c("Female", "Male"))) %>%
   mutate(treatment = factor(.$treatment, labels = c("Control", "Predation"))) %>%
@@ -89,8 +89,8 @@ gard_dat_cor_l <- gard_dat_l %>%
 
 box_plot_pond <- gard_dat_cor_l  %>%
   filter(!is.na(sex)) %>%
-  mutate(region = factor(.$region, levels = c("olf_size", "tele_size", "optic_size", "cere_size"), 
-                         labels = c("Olfactory", "Telencephalon", "Optic", "Cerebellum"))) %>%
+  mutate(region = factor(.$region, levels = c("olf_size", "tele_size", "optic_size", "cere_size", "total_size"), 
+                         labels = c("Olfactory", "Telencephalon", "Optic", "Cerebellum", "Total"))) %>%
   #filter(!(pond == 13 & cross == 7 & id == 79)) %>%
   mutate(sex = factor(.$sex, labels = c("Female", "Male"))) %>%
   mutate(treatment = factor(.$treatment, labels = c("Control", "Predation"))) %>%
@@ -100,7 +100,7 @@ box_plot_pond <- gard_dat_cor_l  %>%
                width = 0.2, color = "black", position = position_nudge(x = 0.25)) + 
   stat_summary(fun.y = mean, geom = "point", size = 3, color = "black", position = position_nudge(x = 0.25), pch = 21) +
   #geom_boxplot()+
-  facet_wrap(first_lake~region, scales = "free_y", ncol = 4) +
+  facet_wrap(first_lake~region, scales = "free_y", ncol = 5) +
   scale_colour_brewer(palette = "Set1", guide_legend(title = "Treatment")) +
   scale_fill_brewer(palette = "Set1", guide_legend(title = "Treatment")) +
   theme_bw() +

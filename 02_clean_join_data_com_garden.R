@@ -23,7 +23,7 @@ top_dat_raw <- lapply(top_results, read.table, header = TRUE)
 top_dat_raw <- rbind_all(top_dat_raw)
 
 # load sex data
-sex_data <- tbl_df(read.csv("data/common_garden_sex.csv", header = TRUE))
+sex_data <- tbl_df(read.csv("data/common_garden_sex_new.csv", header = TRUE))
 
 # load standard length data
 sl_data <- tbl_df(read.csv("data/common_garden_body_size.csv", header = TRUE))
@@ -36,12 +36,20 @@ sl_data <- tbl_df(read.csv("data/common_garden_body_size.csv", header = TRUE))
 top_dat_raw  <- top_dat_raw  %>%
   select(Label, Length)
 
-## convert "Label" to pond/family/id
+## read in fixed names
+## (some samples were mislabelled, but we know which)
+fixed_names <- read.table("data/garden_fixed_fish.txt", h = T, stringsAsFactors = FALSE)
+names(fixed_names)[1] <- "Label"
 
+# fix labels
+top_dat_raw  <- left_join(top_dat_raw, fixed_names) %>% 
+  mutate(Label = ifelse(!is.na(fixed), fixed, Label)) %>%
+  select(-fixed)
+      
 # clean off .jpg/p/trailing 1s
 top_dat_raw$Label <- top_dat_raw$Label %>% 
-  gsub("\\.jpg|p", "", .) %>%
-  gsub("1{1}$", "", .)
+  gsub("1.jpg|2.jpg", "", .) %>%
+  gsub("p", "", .)
 
 # split id string into three columns
 top_dat_raw <- top_dat_raw %>%
@@ -54,9 +62,9 @@ top_dat_raw <- top_dat_raw %>%
 # check number of measurements per individual
 # FALSE = everything as expected
 top_dat_raw %>% 
-  group_by(pond, family, id) %>%
-  summarise(obs_length = length(length) < 9) %>%
-  with(any(obs_length))
+  group_by(pond, family, id) %>% 
+  tally %>%
+  with(any(n > 9))
 
 ###########################################################################
 # format brain data
